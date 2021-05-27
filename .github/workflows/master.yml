@@ -1,0 +1,36 @@
+name: Make (docker epitest)
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  linux-make:
+    name: Make
+    runs-on: ubuntu-20.04
+    container: docker://huntears/light-c-epitest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Make
+        shell: bash
+        run: make
+        if: succeeded()
+      - name: Test_run
+        shell: bash
+        run: make tests_run
+
+  deploy-epitech:
+    name: Deploy (deploy on epitech repo organization)
+    needs: linux-make
+    if: needs.linux-make.outputs.status == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          source-repo: "git@github.com:huntears/zappy.git"
+          destination-repo: "git@github.com:EpitechIT2020/B-YEP-400-TLS-4-1-zappy-alexandre.flion.git"
