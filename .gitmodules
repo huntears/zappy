@@ -1,9 +1,0 @@
-[submodule "zappy_server"]
-	path = zappy_server
-	url = git@github.com:huntears/zappy_server.git
-[submodule "zappy_ai"]
-	path = zappy_ai
-	url = git@github.com:huntears/zappy_ai.git
-[submodule "zappy_gui"]
-	path = zappy_gui
-	url = git@github.com:huntears/zappy_gui.git
