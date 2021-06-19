@@ -1,0 +1,15 @@
+---
+Language: Cpp
+BasedOnStyle: WebKit
+AllowShortFunctionsOnASingleLine: None
+BreakBeforeBinaryOperators: NonAssignment
+ColumnLimit: 80
+IncludeCategories:
+  - Regex: '^(<|"(criterion)/)'
+    Priority: 3
+    SortPriority: 0
+DeriveLineEnding: false
+PointerAlignment: Right
+KeepEmptyLinesAtTheStartOfBlocks: false
+SpaceAfterCStyleCast: true
+...

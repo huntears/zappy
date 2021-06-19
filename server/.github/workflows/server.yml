@@ -1,0 +1,22 @@
+name: Make (docker epitest)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  linux-make:
+    name: Make (Linux Huntears docker)
+    runs-on: ubuntu-20.04
+    container: docker://huntears/light-c-epitest:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Make
+        shell: bash
+        run: make
+        if: succeeded()
+      - name: Test_run
+        shell: bash
+        run: make tests_run
