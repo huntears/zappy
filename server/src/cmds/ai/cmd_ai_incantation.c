@@ -11,13 +11,13 @@
 #include "zappy_server.h"
 
 static const struct incant_requirements requirements[] = {
-    { 1, { 1, 0, 0, 0, 0, 0 } }, // 1->2
-    { 2, { 1, 1, 1, 0, 0, 0 } }, // 2->3
-    { 2, { 2, 0, 1, 0, 2, 0 } }, // 3->4
-    { 4, { 1, 1, 2, 0, 1, 0 } }, // 4->5
-    { 4, { 1, 2, 1, 3, 0, 0 } }, // 5->6
-    { 6, { 1, 2, 3, 0, 1, 0 } }, // 6->7
-    { 6, { 2, 2, 2, 2, 2, 1 } }, // 7->8
+    { 1, { 1, 0, 0, 0, 0, 0 } },
+    { 2, { 1, 1, 1, 0, 0, 0 } },
+    { 2, { 2, 0, 1, 0, 2, 0 } },
+    { 4, { 1, 1, 2, 0, 1, 0 } },
+    { 4, { 1, 2, 1, 3, 0, 0 } },
+    { 6, { 1, 2, 3, 0, 1, 0 } },
+    { 6, { 2, 2, 2, 2, 2, 1 } },
 };
 
 static bool can_incant(zappy_server_t *server, zappy_client_t *client)
@@ -64,19 +64,9 @@ void cmd_ai_pre_incantation(
     }
 }
 
-static void print_levels(team_t *team)
+void cmd_ai_incantation(zappy_server_t *server, zappy_client_t *client,
+    __attribute__((unused)) const char *line)
 {
-    size_t *levels = team->levels;
-
-    printf("%s -> %zu %zu %zu %zu %zu %zu %zu %zu\n", team->name, levels[0],
-        levels[1], levels[2], levels[3], levels[4], levels[5], levels[6],
-        levels[7]);
-}
-
-void cmd_ai_incantation(
-    zappy_server_t *server, zappy_client_t *client, const char *line)
-{
-    UNUSED(line);
     client->ai->is_incantated = false;
     if (!client->ai->pre_incantation_success || !can_incant(server, client)) {
         send_gui_pie(server, client->ai->x, client->ai->y, false);
@@ -84,8 +74,7 @@ void cmd_ai_incantation(
         return;
     }
     send_gui_pie(server, client->ai->x, client->ai->y, true);
-    ITERATE_AIS(ai, server)
-    {
+    ITERATE_AIS(ai, server) {
         if (ai->ai->x == client->ai->x && ai->ai->y == client->ai->y) {
             ai->ai->team_endpoint->levels[ai->ai->level]--;
             ai->ai->level++;
@@ -94,5 +83,8 @@ void cmd_ai_incantation(
             send_gui_plv(server, ai);
         }
     }
-    print_levels(client->ai->team_endpoint);
+    if (client->ai->team_endpoint->levels[7]) {
+        server->net_server->running = false;
+        send_gui_seg(server, client->ai->team_endpoint->name);
+    }
 }

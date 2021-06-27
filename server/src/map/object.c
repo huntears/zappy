@@ -22,13 +22,13 @@ const struct object objects[] = {
 };
 
 const float object_density[] = {
-    0.5, // FOOD
-    0.3, // LINEMATE
-    0.15, // DERAUMERE
-    0.1, // SIBUR
-    0.1, // MENDIANE
-    0.08, // PHIRAS
-    0.05, // THYSTAME
+    0.5,
+    0.3,
+    0.15,
+    0.1,
+    0.1,
+    0.08,
+    0.05,
 };
 
 enum object_type string_to_object(const char *str)
