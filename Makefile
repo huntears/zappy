@@ -6,7 +6,7 @@
 ##
 
 # build
-all: server ai
+all: ai server gui
 .PHONY: all
 
 ai:
@@ -17,6 +17,11 @@ server:
 	@$(MAKE) -C server --no-print-directory all
 	@cp server/zappy_server ./
 .PHONY: server
+
+gui:
+	-@unzip gui/zappy_gui_linux.zip
+	-@chmod +x zappy_gui
+.PHONY: gui
 
 re:
 	@$(MAKE) -s fclean
@@ -54,4 +59,9 @@ fclean: clean
 	@$(MAKE) -C server --no-print-directory fclean
 	@rm -f zappy_server_debug
 	@rm -f zappy_server
+
+	@rm -f zappy_gui
+	@rm -fr zappy_gui_Data
+	@rm -f UnityPlayer*
+	@rm -f LinuxPlayer_s*
 .PHONY: fclean
