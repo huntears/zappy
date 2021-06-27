@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "opt.h"
 
@@ -16,9 +16,9 @@ bool opt_freq(struct opts *opts, char *const *argv)
     int got;
 
     UNUSED(argv);
-    if (!super_atoi(optarg, &got) || got < 1 || got > 10000) {
+    if (!super_atoi(optarg, &got) || got < 1 || got > 100000) {
         fprintf(stderr,
-            "Expected a positive decimal integer between 1 and 10000 argument "
+            "Expected a positive decimal integer between 1 and 100000 argument "
             "to --freq, but got '%s'\n",
             optarg);
         return false;

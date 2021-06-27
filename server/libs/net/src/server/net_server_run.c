@@ -85,10 +85,9 @@ static void process_timeval(net_server_t *ns, struct timespec *start)
     time_t elapsed_ms;
     time_t elapsed_ms_stop;
 
-    if (!ns->on_timeval)
-        return;
     clock_gettime(4, &stop);
-    elapsed_ms = (stop.tv_nsec - start->tv_nsec) / 1000;
+    elapsed_ms = (stop.tv_nsec - start->tv_nsec) / 1000
+        + (stop.tv_sec - start->tv_sec) * 1000000;
     if ((ns->current_timeval.tv_sec == 0 && ns->current_timeval.tv_usec == 0)
         || ns->current_timeval.tv_usec <= elapsed_ms) {
         ns->on_timeval(ns);
@@ -103,7 +102,7 @@ static void process_timeval(net_server_t *ns, struct timespec *start)
     }
 }
 
-bool ns_run(net_server_t *ns)
+void ns_run(net_server_t *ns)
 {
     struct timespec start;
 
@@ -111,7 +110,8 @@ bool ns_run(net_server_t *ns)
     printf("Run server on port: %d\n", ntohs(ns->addr.sa_in.sin_port));
     clock_gettime(4, &start);
     while (ns->running) {
-        process_timeval(ns, &start);
+        if (ns->on_timeval)
+            process_timeval(ns, &start);
         if (select(FD_SETSIZE, &ns->read_fds, &ns->write_fds, NULL,
                 ns->on_timeval ? &ns->current_timeval : NULL)
             == -1) {
@@ -124,5 +124,4 @@ bool ns_run(net_server_t *ns)
         memcpy(&ns->write_fds, &ns->need_write_fds, sizeof(fd_set));
     }
     ns_close_all_sockets(ns);
-    return true;
 }

@@ -222,3 +222,5 @@ pip-selfcheck.json
 .vscode
 .idea
 zappy_server
+zappy_server_patched
+zappy_server_beta

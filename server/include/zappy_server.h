@@ -47,6 +47,11 @@ typedef struct zappy_server {
     if ((gui = ((net_client_t *) it->data)->custom_data)                       \
         && gui->type == CLIENT_GRAPHIC)
 
+#define ITERATE_EGGS(egg, eggs)                                                \
+    egg_t *egg;                                                                \
+    LIST_ITERATE(it, eggs)                                                     \
+    if ((egg = it->data))
+
 // create / destroy
 zappy_server_t *zappy_server_create(struct opts *opts);
 void *zappy_server_destroy(zappy_server_t *server);

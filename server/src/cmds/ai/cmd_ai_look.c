@@ -5,7 +5,7 @@
 ** CMD_ai_look function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -42,18 +42,14 @@ static void show_chunk_content(
     bool print_separator = false;
 
     for (size_t k = 0; k < chunk->nb_players; k++) {
-        if (print_separator)
-            zc_send(client, " ");
-        else
-            print_separator = true;
+        zc_send(client, print_separator ? " " : "");
+        print_separator = true;
         zc_send(client, "player");
     }
     for (size_t object_type = 0; object_type < NB_OBJECTS; object_type++) {
         for (size_t k = 0; k < chunk->objects[object_type]; k++) {
-            if (print_separator)
-                zc_send(client, " ");
-            else
-                print_separator = true;
+            zc_send(client, print_separator ? " " : "");
+            print_separator = true;
             zc_send(client, object_to_string(object_type));
         }
     }

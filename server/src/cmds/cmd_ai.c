@@ -7,12 +7,12 @@
 
 #include <string.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
 
-static const struct server_ai_cmd server_ai_cmds[] = {
+const struct server_ai_cmd server_ai_cmds[] = {
     { "Forward", false, NULL, CMD_PROT(ai_forward), 7 },
     { "Right", false, NULL, CMD_PROT(ai_right), 7 },
     { "Left", false, NULL, CMD_PROT(ai_left), 7 },
@@ -33,6 +33,18 @@ static const struct server_ai_cmd server_ai_cmds[] = {
     { "", false, NULL, NULL, 0 },
 };
 
+void store_cmd_ai(zappy_client_t *client, const char *line)
+{
+    char *line_copy;
+
+    if (client->ai->commands.commands_queue->size >= 10)
+        return;
+    line_copy = strdup(line);
+    if (!line_copy)
+        return;
+    list_add(client->ai->commands.commands_queue, line_copy);
+}
+
 void cmd_ai(zappy_server_t *server, zappy_client_t *client, const char *line)
 {
     size_t cmd_len;
@@ -43,7 +55,9 @@ void cmd_ai(zappy_server_t *server, zappy_client_t *client, const char *line)
             continue;
         if (server_ai_cmds[k].required_arguments && line[cmd_len] != ' ')
             break;
-        printf("AI command: '%s'\n", line);
+        if (!server_ai_cmds[k].required_arguments && line[cmd_len] != '\0')
+            break;
+        printf("AI command: %lu: '%s'\n", client->ai->id, line);
         if (server_ai_cmds[k].pre_cmd)
             server_ai_cmds[k].pre_cmd(server, client, line);
         server_ai_cmds[k].cmd(server, client, line);

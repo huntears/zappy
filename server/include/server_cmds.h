@@ -51,6 +51,9 @@ struct server_gui_cmd {
 bool client_chose_team(
     zappy_server_t *server, zappy_client_t *client, const char *line);
 
+extern const struct server_ai_cmd server_ai_cmds[];
+extern const struct server_gui_cmd server_gui_cmds[];
+
 // main callbacks
 ADD_CMD_PROT(ai);
 ADD_CMD_PROT(gui);
@@ -100,25 +103,30 @@ void send_gui_pnw(zappy_server_t *server, zappy_client_t *client);
 void send_gui_ppo(zappy_server_t *server, zappy_client_t *client);
 void send_gui_plv(zappy_server_t *server, zappy_client_t *client);
 void send_gui_pin(zappy_server_t *server, zappy_client_t *client);
-void send_gui_pex(zappy_server_t *server, size_t player_number);
-void send_gui_pbc(zappy_server_t *server, size_t player_number, char *msg);
-void send_gui_pic(zappy_server_t *server, ...);
-void send_gui_pie(zappy_server_t *server, ...);
-void send_gui_pfk(zappy_server_t *server, size_t player_number);
-void send_gui_pdr(
-    zappy_server_t *server, size_t player_number, int object_type);
-void send_gui_pgt(
-    zappy_server_t *server, size_t player_number, int object_type);
-void send_gui_pdi(zappy_server_t *server, size_t player_number);
-void send_gui_enw(
-    zappy_server_t *server, zappy_client_t *client, int egg_number);
-void send_gui_eht(zappy_server_t *server, int egg_number);
-void send_gui_ebo(zappy_server_t *server, int egg_number);
-void send_gui_edi(zappy_server_t *server, int egg_number);
-void send_gui_sst(zappy_server_t *server, int frequency);
-void send_gui_seg(zappy_server_t *server, char *winning_team_name);
-void send_gui_smg(zappy_server_t *server, char *server_msg);
+void send_gui_pex(zappy_server_t *server, uint64_t player_id);
+void send_gui_pbc(zappy_server_t *server, uint64_t player_id, const char *msg);
+void send_gui_pic(zappy_server_t *server, zappy_client_t *client);
+void send_gui_pie(zappy_server_t *server, int x, int y, bool result);
+void send_gui_pfk(zappy_server_t *server, uint64_t player_id);
+void send_gui_pdr(zappy_server_t *server, uint64_t player_id, int object_type);
+void send_gui_pgt(zappy_server_t *server, uint64_t player_id, int object_type);
+void send_gui_pdi(zappy_server_t *server, uint64_t player_id);
+void send_gui_enw(zappy_server_t *server, egg_t *egg);
+void send_gui_eht(zappy_server_t *server, uint64_t egg_id);
+void send_gui_ebo(zappy_server_t *server, uint64_t egg_id);
+void send_gui_edi(zappy_server_t *server, uint64_t egg_id);
+void send_gui_sst(zappy_server_t *server, uint64_t frequency);
+void send_gui_seg(zappy_server_t *server, const char *winning_team_name);
+void send_gui_smg(zappy_server_t *server, const char *server_msg);
 
 void send_gui_bct_to(zappy_client_t *gui, zappy_server_t *server, int x, int y);
+void send_gui_pin_to(zappy_client_t *gui, zappy_client_t *client);
+void send_gui_plv_to(zappy_client_t *gui, zappy_client_t *client);
+void send_gui_ppo_to(zappy_client_t *gui, zappy_client_t *client);
+void send_gui_pnw_to(zappy_client_t *gui, zappy_client_t *client);
+void send_gui_pnw_to(zappy_client_t *gui, zappy_client_t *client);
+void send_gui_pfk_to(zappy_client_t *gui, uint64_t player_id);
+void send_gui_eht_to(zappy_client_t *gui, uint64_t egg_id);
+void send_gui_enw_to(zappy_client_t *gui, egg_t *egg);
 
 #endif /* !SERVER_CMDS_H_ */

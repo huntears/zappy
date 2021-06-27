@@ -5,7 +5,7 @@
 ** CMD_gui_bct_sst function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -13,11 +13,11 @@
 void cmd_gui_sst(
     zappy_server_t *server, zappy_client_t *client, const char *line)
 {
-    int frequency;
+    uint64_t frequency;
     char after;
 
-    if (sscanf(line, "sst %d%c", &frequency, &after) != 1 || frequency < 1
-        || frequency > 10000) {
+    if (sscanf(line, "sst %lu%c", &frequency, &after) != 1 || frequency < 1
+        || frequency > 100000) {
         zc_send_line(client, GUI_KO_ARGS);
         return;
     }

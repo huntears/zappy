@@ -5,7 +5,7 @@
 ** CMD_ai_forward function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -26,20 +26,21 @@ void cmd_ai_forward(
 {
     zappy_ai_t *ai = client->ai;
 
-    UNUSED(server), UNUSED(line);
+    UNUSED(line);
     switch (ai->direction) {
     case UP:
-        move_ai(server, client, -1, 0);
+        move_ai(server, client, 0, -1);
         break;
     case RIGHT:
-        move_ai(server, client, 0, 1);
-        break;
-    case DOWN:
         move_ai(server, client, 1, 0);
         break;
+    case DOWN:
+        move_ai(server, client, 0, 1);
+        break;
     case LEFT:
-        move_ai(server, client, 0, -1);
+        move_ai(server, client, -1, 0);
         break;
     }
     zc_send_line(client, AI_OK);
+    send_gui_ppo(server, client);
 }

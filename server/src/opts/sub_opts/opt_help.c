@@ -5,7 +5,7 @@
 ** Opt_help function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "opt.h"
 

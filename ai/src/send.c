@@ -32,14 +32,11 @@ PyObject *zappy_send(PyObject *self, PyObject *args)
         return NULL;
     FD_ZERO(&set);
     FD_SET(fd, &set);
-    if (select(fd + 1, NULL, &set, NULL, NULL) == -1) {
-        PyErr_BadInternalCall();
+    if (select(fd + 1, NULL, &set, NULL, NULL) == -1)
         return NULL;
-    }
-    else if (!FD_ISSET(fd, &set)) {
-        PyErr_BadInternalCall();
+    else if (!FD_ISSET(fd, &set))
         return NULL;
-    }
     smart_write(fd, str, strlen(str));
+    Py_INCREF(Py_None);
     return Py_None;
 }

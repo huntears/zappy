@@ -1,0 +1,81 @@
+version: "2"
+services:
+  server:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && ./zappy_server_beta -p 4242"
+    volumes:
+      - .:/usr/src/project
+    ports:
+      - 4242:4242
+  client-1:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-2:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-3:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-4:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-5:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-6:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-7:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server
+  client-8:
+    image: epitechcontent/epitest-docker
+    command: bash -c "cd /usr/src/project && make && ./zappy_ai -p 4242 -n Team1 -h server"
+    volumes:
+      - .:/usr/src/project
+    links:
+      - server
+    depends_on:
+      - server

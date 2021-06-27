@@ -10,22 +10,26 @@
 
 #include <stdint.h>
 
+#include "tools/math.h"
+
 #include "object.h"
 
-#define MOD(a, b) ((((a) % (int) (b)) + (int) (b)) % (int) (b))
+#define TIME_BEFORE_OBJECT_SPAWN (20)
 
 typedef struct zappy_server zappy_server_t;
 
 typedef struct chunk {
-    size_t objects[NB_OBJECTS];
-    size_t nb_players;
+    uint64_t objects[NB_OBJECTS];
+    uint64_t nb_players;
 } chunk_t;
 
 typedef struct map {
     size_t width;
     size_t height;
     chunk_t **chunks;
-    size_t object_count[NB_OBJECTS];
+    uint64_t object_count[NB_OBJECTS];
+    time_t time_before_object_spawn;
+
 } map_t;
 
 // chunks
@@ -37,5 +41,6 @@ map_t *map_create(size_t width, size_t height);
 void *map_destroy(map_t *map);
 
 chunk_t *map_get_chunk(map_t *map, int x, int y);
+void map_spawn_objects(map_t *map, zappy_server_t *zappy_server);
 
 #endif /* !MAP_H_ */

@@ -9,15 +9,20 @@
 
 #include "egg.h"
 
-egg_t *egg_create(int x, int y)
+egg_t *egg_create(uint64_t player_id, int x, int y)
 {
+    static uint64_t id = 0;
     egg_t *egg = malloc(sizeof(egg_t));
 
     if (!egg)
         return NULL;
+    egg->id = id;
+    egg->player_id = player_id;
     egg->x = x;
     egg->y = y;
-    return NULL;
+    egg->time_to_hatching = 600;
+    id++;
+    return egg;
 }
 
 void *egg_destroy(egg_t *egg)

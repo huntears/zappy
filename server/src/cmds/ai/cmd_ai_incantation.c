@@ -5,7 +5,7 @@
 ** CMD_ai_incantation function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -24,7 +24,7 @@ static bool can_incant(zappy_server_t *server, zappy_client_t *client)
 {
     chunk_t *chunk = map_get_chunk(server->map, client->ai->x, client->ai->y);
 
-    if (client->ai->level == 7)
+    if (client->ai->level >= 7)
         return false;
     if (chunk->nb_players != requirements[client->ai->level].nb_of_players)
         return false;
@@ -34,6 +34,13 @@ static bool can_incant(zappy_server_t *server, zappy_client_t *client)
             return false;
         }
     }
+    ITERATE_AIS(ai, server)
+    {
+        if (ai->ai->x != client->ai->x || ai->ai->y != client->ai->y)
+            continue;
+        if (ai->ai->level != client->ai->level)
+            return false;
+    }
     return true;
 }
 
@@ -42,13 +49,28 @@ void cmd_ai_pre_incantation(
 {
     UNUSED(line);
     client->ai->is_incantated = true;
+    send_gui_pic(server, client);
     if (!can_incant(server, client)) {
         client->ai->pre_incantation_success = false;
         zc_send_line(client, AI_KO);
         return;
     }
     client->ai->pre_incantation_success = true;
-    zc_send_line(client, "Elevation underway");
+    ITERATE_AIS(ai, server)
+    {
+        if (ai->ai->x == client->ai->x && ai->ai->y == client->ai->y) {
+            zc_send_line(ai, "Elevation underway");
+        }
+    }
+}
+
+static void print_levels(team_t *team)
+{
+    size_t *levels = team->levels;
+
+    printf("%s -> %zu %zu %zu %zu %zu %zu %zu %zu\n", team->name, levels[0],
+        levels[1], levels[2], levels[3], levels[4], levels[5], levels[6],
+        levels[7]);
 }
 
 void cmd_ai_incantation(
@@ -57,11 +79,20 @@ void cmd_ai_incantation(
     UNUSED(line);
     client->ai->is_incantated = false;
     if (!client->ai->pre_incantation_success || !can_incant(server, client)) {
+        send_gui_pie(server, client->ai->x, client->ai->y, false);
         zc_send_line(client, AI_KO);
         return;
     }
-    client->ai->team_endpoint->levels[client->ai->level]--;
-    client->ai->level++;
-    client->ai->team_endpoint->levels[client->ai->level]++;
-    zc_send(client, "Current level: %d\n", client->ai->level + 1);
+    send_gui_pie(server, client->ai->x, client->ai->y, true);
+    ITERATE_AIS(ai, server)
+    {
+        if (ai->ai->x == client->ai->x && ai->ai->y == client->ai->y) {
+            ai->ai->team_endpoint->levels[ai->ai->level]--;
+            ai->ai->level++;
+            ai->ai->team_endpoint->levels[ai->ai->level]++;
+            zc_send(ai, "Current level: %d\n", ai->ai->level + 1);
+            send_gui_plv(server, ai);
+        }
+    }
+    print_levels(client->ai->team_endpoint);
 }

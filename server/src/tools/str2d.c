@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 size_t str2d_len(char *const *array)
 {

@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 void signal_handler(int signal)
 {

@@ -12,7 +12,7 @@
 
 #include "net/net_server.h"
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "zappy_client.h"
 

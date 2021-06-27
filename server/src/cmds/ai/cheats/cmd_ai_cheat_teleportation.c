@@ -5,7 +5,7 @@
 ** Cmd_ai_cheat_teleportation function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -26,4 +26,5 @@ void cmd_ai_cheat_teleportation(
     client->ai->y = MOD(y, server->map->height);
     map_get_chunk(server->map, client->ai->x, client->ai->y)->nb_players++;
     zc_send_line(client, AI_OK);
+    send_gui_ppo(server, client);
 }

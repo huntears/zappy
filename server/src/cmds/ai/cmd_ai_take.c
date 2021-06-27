@@ -5,7 +5,7 @@
 ** CMD_ai_take function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -32,6 +32,7 @@ void cmd_ai_take(
         return;
     }
     chunk->objects[object]--;
+    server->map->object_count[object]--;
     client->ai->inventory[object]++;
     zc_send_line(client, AI_OK);
     send_gui_pgt(server, client->ai->id, object);

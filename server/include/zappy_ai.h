@@ -27,31 +27,38 @@ enum direction {
     LEFT,
 };
 
-typedef struct zappy_ai {
-    size_t id;
-    team_t *team_endpoint;
+struct zappy_ai_cmd {
     list_t *commands_queue;
+    int time_before_cmd_execution;
+};
+
+typedef struct zappy_ai {
+    uint64_t id;
+    team_t *team_endpoint;
+    struct zappy_ai_cmd commands;
     bool is_alive;
-    size_t level;
+    uint64_t level;
     int x;
     int y;
     enum direction direction;
-    size_t remaining_time;
-    size_t inventory[NB_OBJECTS];
+    uint64_t remaining_time;
+    uint64_t inventory[NB_OBJECTS];
     bool is_fork;
     bool is_incantated;
     bool pre_incantation_success;
 } zappy_ai_t;
 
 struct incant_requirements {
-    size_t nb_of_players;
-    size_t objects[NB_OBJECTS - 1];
+    uint64_t nb_of_players;
+    uint64_t objects[NB_OBJECTS - 1];
 };
 
 // create / destroy
-zappy_ai_t *zappy_ai_create(zappy_server_t *server, team_t *team_endpoint);
+zappy_ai_t *zappy_ai_create(
+    zappy_server_t *server, team_t *team_endpoint, size_t id);
 void *zappy_ai_destroy(zappy_ai_t *zappy_ai);
 
+void store_cmd_ai(zappy_client_t *client, const char *line);
 bool zappy_ai_consume_time(
     zappy_server_t *server, zappy_client_t *client, size_t consume_time);
 

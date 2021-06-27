@@ -23,12 +23,8 @@ void send_gui_bct_to(zappy_client_t *gui, zappy_server_t *server, int x, int y)
 
 void send_gui_bct(zappy_server_t *server, int x, int y)
 {
-    zappy_client_t *gui;
-
-    LIST_ITERATE(it, server->net_server->clients)
+    ITERATE_GUIS(gui, server)
     {
-        gui = ((net_client_t *) it->data)->custom_data;
-        if (gui && gui->type == CLIENT_GRAPHIC)
-            send_gui_bct_to(gui, server, x, y);
+        send_gui_bct_to(gui, server, x, y);
     }
 }

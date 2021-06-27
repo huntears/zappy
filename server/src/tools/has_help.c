@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 bool has_help(char *const *tab)
 {

@@ -5,7 +5,7 @@
 ** Cmd_ai_cheat_infinite_resources function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"

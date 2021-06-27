@@ -11,7 +11,7 @@
 #include <time.h>
 
 #include "opt.h"
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "zappy_server.h"
 

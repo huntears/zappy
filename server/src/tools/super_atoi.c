@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 bool super_atoi(const char *str, int *value)
 {

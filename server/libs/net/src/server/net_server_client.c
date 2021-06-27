@@ -17,8 +17,11 @@
 
 void ns_disconnect_client(net_server_t *net_server, net_client_t *net_client)
 {
+    bool is_disconnected = net_client->disconnected;
+
     net_client->disconnected = true;
-    NS_CALLBACK(net_server, on_disconnect, net_client);
+    if (!is_disconnected)
+        NS_CALLBACK(net_server, on_disconnect, net_client);
     if (!(net_client->write_buffer.length != 0
             && FD_ISSET(net_client->socket, &net_server->need_write_fds)))
         ns_remove_client(net_server, net_client);

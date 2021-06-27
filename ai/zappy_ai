@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import ai
+import sys
+
+if __name__ == "__main__":
+    exit(ai.main(sys.argv))

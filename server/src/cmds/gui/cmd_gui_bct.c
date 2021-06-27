@@ -5,7 +5,7 @@
 ** CMD_gui_bct function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"
@@ -18,7 +18,7 @@ void cmd_gui_bct(
     char after;
 
     if (sscanf(line, "bct %d %d%c", &x, &y, &after) != 2) {
-        zc_send_line(client, AI_KO);
+        zc_send_line(client, GUI_KO_ARGS);
         return;
     }
     send_gui_bct_to(client, server, x, y);

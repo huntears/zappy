@@ -15,7 +15,7 @@ BIN = zappy_server
 # sources
 C_SRCS = $(shell find src -name "*.c")
 LIBS = net list
-SYSTEM_LIBS =
+SYSTEM_LIBS = m
 
 # the C compiler to use
 CC = gcc -fdiagnostics-color=always

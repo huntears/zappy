@@ -13,9 +13,6 @@
 
 #define UNUSED(var) ((void) (var))
 
-#define MAX(x, y) ((x) > (y) ? (x) : (y))
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-
 // str2d
 size_t str2d_len(char *const *array);
 char **str2d_append(char **array, const char *str);

@@ -28,7 +28,7 @@ typedef struct zappy_client {
 zappy_client_t *zappy_client_create(net_client_t *net_client);
 void *zappy_client_destroy(zappy_client_t *zappy_client);
 
-void zappy_ai_die(zappy_client_t *zappy_client);
+void zappy_ai_die(zappy_client_t *zappy_client, zappy_server_t *server);
 
 // send
 int zc_send(zappy_client_t *zappy_client, const char *str, ...);

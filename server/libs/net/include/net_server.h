@@ -92,7 +92,7 @@ void *ns_destroy(net_server_t *net_server);
 
 // run
 bool ns_accept_one(net_server_t *net_server);
-bool ns_run(net_server_t *net_server);
+void ns_run(net_server_t *net_server);
 void ns_close_all_sockets(net_server_t *net_server);
 
 // callbacks

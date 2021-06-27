@@ -6,7 +6,7 @@
 ##
 
 all:
-	python ./setup.py install --user
+	python3 ./setup.py install --user
 
 clean:
 	rm -rf build

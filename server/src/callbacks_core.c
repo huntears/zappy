@@ -11,7 +11,7 @@
 
 #include "net/gns/get_next_line.h"
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_client.h"

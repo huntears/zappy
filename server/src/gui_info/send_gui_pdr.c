@@ -7,19 +7,15 @@
 
 #include "zappy_server.h"
 
-void send_gui_pdr_to(zappy_client_t *gui, size_t player_number, int object_type)
+void send_gui_pdr_to(zappy_client_t *gui, uint64_t player_id, int object_type)
 {
-    zc_send(gui, "pdr %zu %d\n", player_number, object_type);
+    zc_send(gui, "pdr %lu %d\n", player_id, object_type);
 }
 
-void send_gui_pdr(zappy_server_t *server, size_t player_number, int object_type)
+void send_gui_pdr(zappy_server_t *server, uint64_t player_id, int object_type)
 {
-    zappy_client_t *gui;
-
-    LIST_ITERATE(it, server->net_server->clients)
+    ITERATE_GUIS(gui, server)
     {
-        gui = ((net_client_t *) it->data)->custom_data;
-        if (gui && gui->type == CLIENT_GRAPHIC)
-            send_gui_pdr_to(gui, player_number, object_type);
+        send_gui_pdr_to(gui, player_id, object_type);
     }
 }

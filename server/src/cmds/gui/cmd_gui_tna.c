@@ -5,7 +5,7 @@
 ** CMD_gui_bct_tna function
 */
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_server.h"

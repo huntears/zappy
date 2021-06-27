@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tools.h"
+#include "tools/tools.h"
 
 #include "server_cmds.h"
 #include "zappy_client.h"
@@ -19,7 +19,6 @@ ns_status_e on_client_connect(
     zappy_server_t *zappy_server, zappy_client_t *zappy_client)
 {
     UNUSED(zappy_server);
-    printf("Client connect\n");
     zc_send_line(zappy_client, "WELCOME");
     return NS_OK;
 }
@@ -35,7 +34,7 @@ ns_status_e on_client_recv_line(zappy_server_t *zappy_server,
         return NS_OK;
     }
     if (zappy_client->type == CLIENT_AI)
-        cmd_ai(zappy_server, zappy_client, line);
+        store_cmd_ai(zappy_client, line);
     else
         cmd_gui(zappy_server, zappy_client, line);
     return NS_OK;
@@ -45,9 +44,13 @@ ns_status_e on_client_disconnect(
     zappy_server_t *zappy_server, zappy_client_t *zappy_client)
 {
     UNUSED(zappy_server), UNUSED(zappy_client);
-    if (zappy_client->type == CLIENT_AI && zappy_client->ai->is_alive)
-        zappy_ai_die(zappy_client);
-    printf("Client disconnected\n");
+    if (zappy_client->type == CLIENT_AI) {
+        if (zappy_client->ai->is_alive)
+            zappy_ai_die(zappy_client, zappy_server);
+        printf("AI %lu disconnected\n", zappy_client->ai->id);
+    } else if (zappy_client->type == CLIENT_GRAPHIC) {
+        printf("GUI disconnected\n");
+    }
     return NS_OK;
 }
 
@@ -57,4 +60,8 @@ void on_server_timeval(zappy_server_t *zappy_server)
     {
         zappy_ai_consume_time(zappy_server, client_ai, 1);
     }
+    for (size_t team_id = 0; zappy_server->teams[team_id]; team_id++) {
+        team_consume_time(zappy_server, zappy_server->teams[team_id], 1);
+    }
+    map_spawn_objects(zappy_server->map, zappy_server);
 }
