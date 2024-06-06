@@ -30,7 +30,7 @@ static bool can_incant(zappy_server_t *server, zappy_client_t *client)
         return false;
     for (size_t object_id = 1; object_id < NB_OBJECTS; object_id++) {
         if (chunk->objects[object_id]
-            != requirements[client->ai->level].objects[object_id - 1]) {
+            < requirements[client->ai->level].objects[object_id - 1]) {
             return false;
         }
     }
@@ -62,6 +62,11 @@ void cmd_ai_pre_incantation(
             zc_send_line(ai, "Elevation underway");
         }
     }
+    chunk_t *chunk = map_get_chunk(server->map, client->ai->x, client->ai->y);
+    for (size_t object_id = 1; object_id < NB_OBJECTS; object_id++) {
+        chunk->objects[object_id] -=
+            requirements[client->ai->level].objects[object_id - 1];
+    }
 }
 
 void cmd_ai_incantation(zappy_server_t *server, zappy_client_t *client,
@@ -70,11 +75,11 @@ void cmd_ai_incantation(zappy_server_t *server, zappy_client_t *client,
     client->ai->is_incantated = false;
     if (!client->ai->pre_incantation_success || !can_incant(server, client)) {
         send_gui_pie(server, client->ai->x, client->ai->y, false);
-        zc_send_line(client, AI_KO);
         return;
     }
     send_gui_pie(server, client->ai->x, client->ai->y, true);
-    ITERATE_AIS(ai, server) {
+    ITERATE_AIS(ai, server)
+    {
         if (ai->ai->x == client->ai->x && ai->ai->y == client->ai->y) {
             ai->ai->team_endpoint->levels[ai->ai->level]--;
             ai->ai->level++;
