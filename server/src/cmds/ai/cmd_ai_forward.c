@@ -29,16 +29,24 @@ void cmd_ai_forward(
     UNUSED(line);
     switch (ai->direction) {
     case UP:
+        // printf("up %d %d\n", ai->x, ai->y);
         move_ai(server, client, 0, -1);
+        // printf("/up %d %d\n", ai->x, ai->y);
         break;
     case RIGHT:
+        // printf("right %d %d\n", ai->x, ai->y);
         move_ai(server, client, 1, 0);
+        // printf("/right %d %d\n", ai->x, ai->y);
         break;
     case DOWN:
+        // printf("down %d %d\n", ai->x, ai->y);
         move_ai(server, client, 0, 1);
+        // printf("/down %d %d\n", ai->x, ai->y);
         break;
     case LEFT:
+        // printf("left %d %d\n", ai->x, ai->y);
         move_ai(server, client, -1, 0);
+        // printf("/left %d %d\n", ai->x, ai->y);
         break;
     }
     zc_send_line(client, AI_OK);

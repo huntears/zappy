@@ -56,7 +56,11 @@ void *map_destroy(map_t *map)
 
 chunk_t *map_get_chunk(map_t *map, int x, int y)
 {
-    return &map->chunks[MOD(y, map->height)][MOD(x, map->width)];
+    while (x < 0)
+        x += map->width;
+    while (y < 0)
+        y += map->height;
+    return &map->chunks[y % map->height][x % map->width];
 }
 
 void map_spawn_objects(map_t *map, zappy_server_t *zappy_server)

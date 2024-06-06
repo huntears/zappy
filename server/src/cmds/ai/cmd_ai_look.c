@@ -17,20 +17,20 @@ static chunk_t *get_chunk(
     int y = client->ai->y;
 
     if (client->ai->direction == UP) {
-        x -= layer;
-        y += col;
+        y -= layer;
+        x += col;
     }
     if (client->ai->direction == RIGHT) {
-        x += col;
-        y += layer;
+        y += col;
+        x += layer;
     }
     if (client->ai->direction == DOWN) {
-        x += layer;
-        y -= col;
+        y += layer;
+        x -= col;
     }
     if (client->ai->direction == LEFT) {
-        x -= col;
-        y -= layer;
+        y -= col;
+        x -= layer;
     }
     return map_get_chunk(server->map, x, y);
 }
